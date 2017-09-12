@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Sep  8 13:40:33 2017
+
+@author: justine
+"""
+
+import pickle
+import generatemodifie
+
+def retrieveNumbers() :
+    f=open("closests", "rb")
+    closestsNb=pickle.load(f)
+    f.close()
+        
+    return closestsNb
+
+def createSounds(path) :
+    closestsNb=retrieveNumbers()
+    compteur=0
+    while len(closestsNb)>0 :
+        compteur+=1
+        output_filename = path+"sound"+str(compteur)+".wav"
+        if len(closestsNb>=3) :
+            generatemodifie.main(output_filename, 3, indice(closestsNb[0]), indice(closestsNb[1]), indice(closestsNb[2]))
+            closestsNb=closestsNb[3:]
+        elif len(closestsNb==2) :
+            generatemodifie.main(output_filename, 2, indice(closestsNb[0]), indice(closestsNb[1]))
+            closestsNb=closestsNb[2:]
+        elif len(closestsNb==1) :
+            generatemodifie.main(output_filename, 1, indice(closestsNb[0]))
+            closestsNb=closestsNb[1:]
+    
+    return
+    
+
+
+def indice(couple) :
+    
+    videoNb=couple[0]
+    extractNb=couple[1]
+    soundName="v"+videoNb+"sound"+extractNb+".wav"
+    f=open("filesNames", "rb")
+    filesNames=pickle.load(f)
+    f.close()
+    directory = filesNames[0]
+    filesNames=filesNames[1:]
+    index=filesNames.index(directory+soundName)
+    
+    return index
