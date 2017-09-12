@@ -117,7 +117,8 @@ def rename(listVideosRef) :
         for soundName in os.listdir(video[:-4]+"son"):
             src= video[:-4]+"son/"+soundName
             dst=directory+"v"+str(compteur)+soundName[:-4]+".mp3"
-            c="ffmpeg -i "+src+" -f mp3 "+dst
+            #c="ffmpeg -i "+src+" -f mp3 "+dst
+            c="ffmpeg -i "+src+" -codec:a libmp3lame -qscale:a 2 "+dst
             subprocess.call(c, shell=True)
             #shutil.copyfile(src, dst)
         
