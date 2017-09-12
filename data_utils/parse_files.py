@@ -113,6 +113,7 @@ def fft_blocks_to_time_blocks(blocks_ft_domain):
 
 def convert_wav_files_to_nptensor(directory, block_size, max_seq_len, out_file, max_files=20, useTimeDomain=False):
     files = []
+    print("DIRECTORY :", directory)
     for file in os.listdir(directory):
         if file.endswith('.wav'):
             files.append(directory+file)
@@ -122,11 +123,12 @@ def convert_wav_files_to_nptensor(directory, block_size, max_seq_len, out_file, 
     f.close()
     chunks_X = []
     chunks_Y = []
-    num_files = len(files)
+    num_files = len(files)-1
     if(num_files > max_files):
         _files = max_files
     for file_idx in xrange(num_files):
         file = files[file_idx]
+        print directory
         print 'Processing: ', (file_idx+1),'/',num_files
         print 'Filename: ', file
         X, Y = load_training_example(file, block_size, useTimeDomain=useTimeDomain)
