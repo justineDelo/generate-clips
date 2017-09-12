@@ -64,7 +64,7 @@ def mainIdea1Part1(imagesNames, path, listVideosRef, ideaNb=1, extraction=0) :
         if extraction == 1 :
             for video in listVideosRef :
                 extractionImages.extractionImagesAndSounds(video, "png", "wav", 0.5, 1)
-        #rename(listVideosRef)
+        rename(listVideosRef)
         print("ren")
         a=0
         for name in listVideosRef :
@@ -102,18 +102,24 @@ def mainIdea1Part1(imagesNames, path, listVideosRef, ideaNb=1, extraction=0) :
         f.close()
         
         return 
-    
+
+import subprocess
 def rename(listVideosRef) :
-    directory = "datasets/YourMusicLibrary/wave/"
+    directory = "datasets/YourMusicLibrary/"
     if (not (os.path.isdir(directory))) :
+        os.makedirs(directory, mode=0o777)
+    else :
+        shutil.rmtree(directory)
         os.makedirs(directory, mode=0o777)
     compteur=0
     for video in listVideosRef :
         compteur+=1
         for soundName in os.listdir(video[:-4]+"son"):
             src= video[:-4]+"son/"+soundName
-            dst=directory+"v"+str(compteur)+soundName
-            shutil.copyfile(src, dst)
+            dst=directory+"v"+str(compteur)+soundName[:-4]+".mp3"
+            c="ffmpeg -i "+src+" -f mp3 "+dst
+            subprocess.call(c, shell=True)
+            #shutil.copyfile(src, dst)
         
     return 
 
