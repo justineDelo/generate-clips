@@ -55,7 +55,7 @@ def featuresImages(path, imagesPaths) :
 
 import pickle
 
-def mainPart1(imagesNames, path, listVideosRef, ideaNb=1, extraction=0) :
+def mainPart1(imagesNames, path, ideaNb=1, extraction=0) :
         #extracts and computes features from references :
         featsRef=[]
         listVideosRef= [path+n for n in os.listdir(path) if n[-4:]=='.mp4']
@@ -76,7 +76,7 @@ def mainPart1(imagesNames, path, listVideosRef, ideaNb=1, extraction=0) :
         if ideaNb==2 :
             print("2")
             while(len(imagFeats)>0) :
-                if len(imagFeats >=3) :
+                if len(imagFeats) >=3 :
                     featsMeans.append((np.array(imagFeats[0])+np.array(imagFeats[1])+np.array(imagFeats[2]))/3)
                     imagFeats=imagFeats[3:]
                 elif len(imagFeats) ==2 :
@@ -110,6 +110,7 @@ def rename(listVideosRef) :
         for soundName in os.listdir(video[:-4]+"son"):
             src= video[:-4]+"son/"+soundName
             dst=directory+"v"+str(compteur)+soundName[:-4]+".mp3"
+            print(src, dst)
             c="ffmpeg -i "+src+" -codec:a libmp3lame -qscale:a 2 "+dst
             subprocess.call(c, shell=True)
 
