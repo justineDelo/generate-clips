@@ -8,9 +8,12 @@ Created on Fri Sep  8 13:40:33 2017
 
 import pickle
 import generate
-import subprocess
+
 
 def retrieveNumbers() :
+    """
+    retrieves the couples [videoNb, extractNb] corresponding to each sound chosen to create the new sounds
+    """
     f=open("closests", "rb")
     closestsNb=pickle.load(f)
     f.close()
@@ -18,6 +21,9 @@ def retrieveNumbers() :
     return closestsNb
 
 def createSounds(path, ideaNb=1) :
+    """
+    this function is the link between what was done in python3.6 (extraction, sounds chosen etc) and the gruv program to generate a new sound
+    """
     closestsNb=retrieveNumbers()
     compteur=0
     print (closestsNb[1])
@@ -47,6 +53,9 @@ def createSounds(path, ideaNb=1) :
 
 
 def indice(couple) :
+    """
+    this function is used to find the right sound in the list created by train.py (gruv) according to the videoNb and the extractNb retrieved by closest
+    """
     print(couple)
     videoNb=couple[0]+1
     extractNb=couple[1]+1
@@ -62,4 +71,11 @@ def indice(couple) :
     
     return index, directory+soundName
 
-createSounds("/media/justine/Maxtor1/TB1A/stage/")
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("path")
+parser.add_argument("nb")
+args = parser.parse_args()
+
+createSounds(args.path, int(args.nb))
