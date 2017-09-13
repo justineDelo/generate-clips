@@ -20,17 +20,6 @@ import moviepy.editor as mp
 import moviepy.video.fx.all as vfx
 import random
 
-#parameters
-"""
-#pathMixImages='/media/justine/Maxtor1/TB1A/stage/Mix/' #path where the composed images will be saved
-#path='/media/justine/Maxtor1/TB1A/stage/' # path to the location of the reference videos and the repertories containing the image and sounds extracted from them
-pathMixImages='/home/justine/Documents/TB1A/stage/Mix/' 
-path='/home/justine/Documents/TB1A/stage/' 
-
-width = 0.5 
-listVideosRef= [path+n for n in os.listdir(path) if n[-4:]=='.mp4']
-"""
-
 
 def featuresRefInfile(listVideosRef, path) :
     """
@@ -38,8 +27,7 @@ def featuresRefInfile(listVideosRef, path) :
     """
     featuresRefCouple=features.featuresManyVideos(listVideosRef, path)
     np.save(path+"featsRef"+".npy",featuresRefCouple)
-#    with open(path+'dico.txt', 'w') as file :
-#        json.dump(dicoNomsIndices, file)
+
     return
     
 
@@ -49,8 +37,6 @@ def featsRefRead(path) :
     just to retrieve the matrix with all the features for reference videos
     """
     feats = np.load(path+"featsRef"+".npy")
-#    with open(path+'dico.txt', 'r') as file :
-#        dicoNomsIndices  = json.load(file)
     return feats
 
 
@@ -113,8 +99,6 @@ def generateVideo(soundName, imagesNb, listVideosRef, path, width, musicGenerati
     """
     compteur=1
     name=path+"output/"+"portion1"
-
-#    soundName=soundName[:-4] + "son/sound1.wav"
     listeVideosNames=[]
     for im in imagesNb :
         listeVideosNames.append(name+".mp4")
@@ -124,33 +108,15 @@ def generateVideo(soundName, imagesNb, listVideosRef, path, width, musicGenerati
             imageName = listVideosRef[VidNb][:-4] + "/im"+str(extractNb+1)+".png"
         if musicGeneration =="yes" :
             imageName = im
-
-        # convert wav into mp3
-#        c1="ffmpeg -i "+soundName+" -vn -ar 44100 -ac 2 -ab 192k -f mp3 "+soundName[:-4]+".mp3"
-#        subprocess.call(c1, shell=True)
         #then create a video with the right duration containing only the image
         c2="ffmpeg -loop 1 -i "+imageName+" -c:v libx264 -t "+str(int(2*width))+" -pix_fmt yuv420p -vf scale=320:240 "+name+".mp4"
         subprocess.call(c2, shell=True)
-
-#        #add the sound
-#        c3="ffmpeg -i "+name+"im.mp4 -i "+soundName[:-4]+".mp3"+" -codec copy -shortest "+name+".mp4"
-#        subprocess.call(c3, shell=True)
-
-
         name=path+"output/"+"portion"+str(compteur+1)
         print(name)
         compteur+=1
-#        if compteur <=10:
-#            soundName = soundName[:-5]+str(compteur)+".wav"
-#        elif compteur <=100 :
-#            soundName = soundName[:-6]+str(compteur)+".wav"
-#        elif compteur <= 1000 :
-#            soundName = soundName[:-7]+str(compteur)+".wav"
-#        elif compteur <= 10000 :
-#            soundName = soundName[:-8]+str(compteur)+".wav"
         print(soundName)
 
-    #concatenate.concatenate2(listeVideosNames[1:], path+"output/videoFinale.mp4")
+
     audio = mp.AudioFileClip(soundName)
     liste = []
     for name in listeVideosNames :
