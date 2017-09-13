@@ -18,6 +18,7 @@ You need to have the following libraries :
 	- opencv (cv2)
 	- tensorflow
 	- random
+	- pickle
 
 You also need to install ffmpeg
 
