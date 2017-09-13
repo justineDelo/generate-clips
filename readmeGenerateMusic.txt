@@ -55,7 +55,11 @@ python2.7 train.py
 
 4) write :
 
-python2.7 generateMusique27.py
+python2.7 generateMusique27.py path nb
+
+	the different parameters are :
+		- path : is the path to the directory containing the reference videos. It should end with /
+		- nb : is the version you want to use. Must be 1 or 2. There are two versions available :the first one uses 3 music reference to create a sound for 3 photos, the second one uses only one. (see principle for more information).
 
 5) write :
 	python3.6 generateMusic.py part -i pathImage1 pathImage2 ... pathImagen -p path -nb nb
