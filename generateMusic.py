@@ -74,6 +74,7 @@ def mainPart1(imagesNames, path, listVideosRef, ideaNb=1, extraction=0) :
         sounds=[]
         featsMeans=[]
         if ideaNb==2 :
+            print("2")
             while(len(imagFeats)>0) :
                 if len(imagFeats >=3) :
                     featsMeans.append((np.array(imagFeats[0])+np.array(imagFeats[1])+np.array(imagFeats[2]))/3)
@@ -154,6 +155,7 @@ parser.add_argument('-i','--list', nargs='+', help='<Required> Set flag', requir
 parser.add_argument("-p","--path")
 parser.add_argument("-e", "--extraction", nargs='?', default=1)
 parser.add_argument("-nb", "--ideaNb", nargs='?', default = 1)
+
 args = parser.parse_args()
 
 if int(args.part)==1 :
