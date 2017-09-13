@@ -63,8 +63,8 @@ def mainIdea1Part1(imagesNames, path, listVideosRef, ideaNb=1, extraction=0) :
         listVideosRef= [path+n for n in os.listdir(path) if n[-4:]=='.mp4']
         if extraction == 1 :
             for video in listVideosRef :
-                extractionImages.extractionImagesAndSounds(video, "png", "wav", 0.5, 1)
-        rename(listVideosRef)
+                extractionImages.extractionImagesAndSounds(video, "png", "wav", 5, 10)
+            rename(listVideosRef)
         print("ren")
         a=0
         for name in listVideosRef :
@@ -94,7 +94,7 @@ def mainIdea1Part1(imagesNames, path, listVideosRef, ideaNb=1, extraction=0) :
             featsMeans=imagFeats
         print("here")
         for extract in featsMeans :
-            neighbours= generation.closest(extract, f)
+            neighbours= generation.closest(extract, f)[0]
             sounds.append(neighbours)
         print("end")
         f=open("closests", "wb")
@@ -117,18 +117,14 @@ def rename(listVideosRef) :
         for soundName in os.listdir(video[:-4]+"son"):
             src= video[:-4]+"son/"+soundName
             dst=directory+"v"+str(compteur)+soundName[:-4]+".mp3"
-            #c="ffmpeg -i "+src+" -f mp3 "+dst
             c="ffmpeg -i "+src+" -codec:a libmp3lame -qscale:a 2 "+dst
             subprocess.call(c, shell=True)
-            #shutil.copyfile(src, dst)
+
         
     return 
 
 def mainIdea1Part2(path, imagesNames) :
     n=0
-#    f=open("closests", "rb")
-#    closestsNb=pickle.load(f)
-#    f.close()
     liste=[]
     while len(imagesNames)>0 :
         n+=1
@@ -145,7 +141,7 @@ def mainIdea1Part2(path, imagesNames) :
         
             
         generation.generateVideo(soundName, imagesNb, [], path, 2.5, "yes", str(n) ) # now we have created many videos that lasts 15seconds with 3images and one music
-        liste.append(path+"output/videoFinale"+n+".mp4")
+        liste.append(path+"output/videoFinale"+str(n)+".mp4")
     listeBis = []
     for name in liste :
         listeBis.append(mp.VideoFileClip(name))
