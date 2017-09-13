@@ -157,11 +157,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument("part", default=1)
 parser.add_argument('-i','--list', nargs='+', help='<Required> Set flag', required=True)
 parser.add_argument("-p","--path")
+parser.add_argument("-e", "--extraction", nargs='?', default=1)
 parser.add_argument("-nb", "--ideaNb", nargs='?', default = 1)
 args = parser.parse_args()
 
 if int(args.part)==1 :
-    mainIdea1Part1(args.list, args.path, int(args.ideaNb))
+    mainIdea1Part1(args.list, args.path, int(args.ideaNb), int(args.extraction))
 elif int(args.part)==2 :
     mainIdea1Part2(args.path, args.list)
 
