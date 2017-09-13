@@ -51,13 +51,11 @@ def featuresImages(path, imagesPaths) :
         out.append(transfer_values_train)
     return out
 
-def generationMusique() :
-    
-    return
+
 
 import pickle
 
-def mainIdea1Part1(imagesNames, path, listVideosRef, ideaNb=1, extraction=0) :
+def mainPart1(imagesNames, path, listVideosRef, ideaNb=1, extraction=0) :
         #extracts and computes features from references :
         featsRef=[]
         listVideosRef= [path+n for n in os.listdir(path) if n[-4:]=='.mp4']
@@ -65,20 +63,16 @@ def mainIdea1Part1(imagesNames, path, listVideosRef, ideaNb=1, extraction=0) :
             for video in listVideosRef :
                 extractionImages.extractionImagesAndSounds(video, "png", "wav", 5, 10)
             rename(listVideosRef)
-        print("ren")
         a=0
         for name in listVideosRef :
             a+=1
-            print(name, a)
             featsRef.append(features.featuresImages(name, path))
         np.save(path+"featsRefImages"+".npy",featsRef)
-        print("saved")
         #work with the images given in parameters :
         imagFeats = featuresImages(path, imagesNames) #computes the features for all the images
         f= np.load(path+"featsRefImages"+".npy")
         sounds=[]
         featsMeans=[]
-        print("loaded")
         if ideaNb==2 :
             while(len(imagFeats)>0) :
                 if len(imagFeats >=3) :
@@ -92,11 +86,9 @@ def mainIdea1Part1(imagesNames, path, listVideosRef, ideaNb=1, extraction=0) :
                     imagFeats=imagFeats[1:]
         elif ideaNb==1 :
             featsMeans=imagFeats
-        print("here")
         for extract in featsMeans :
             neighbours= generation.closest(extract, f)[0]
             sounds.append(neighbours)
-        print("end")
         f=open("closests", "wb")
         pickle.dump(sounds, f, protocol=2)
         f.close()
@@ -123,7 +115,10 @@ def rename(listVideosRef) :
         
     return 
 
-def mainIdea1Part2(path, imagesNames) :
+def mainPart2(path, imagesNames) :
+    """
+    retrieves the sounds created in python2.7 and use them to create the final videoclip
+    """
     n=0
     liste=[]
     while len(imagesNames)>0 :
@@ -162,8 +157,8 @@ parser.add_argument("-nb", "--ideaNb", nargs='?', default = 1)
 args = parser.parse_args()
 
 if int(args.part)==1 :
-    mainIdea1Part1(args.list, args.path, int(args.ideaNb), int(args.extraction))
+    mainPart1(args.list, args.path, int(args.ideaNb), int(args.extraction))
 elif int(args.part)==2 :
-    mainIdea1Part2(args.path, args.list)
+    mainPart2(args.path, args.list)
 
 
